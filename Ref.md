@@ -1,6 +1,7 @@
 ---
 tags : Bible, français
 cssclass : français
+direction : ltr
 ---
 # Bible AELF
 
@@ -78,5 +79,3 @@ cssclass : français
 [[3 Jn|3 Jean]]
 [[Jude|Jude]]
 [[Ap|Apocalypse]]
-
-Hello
