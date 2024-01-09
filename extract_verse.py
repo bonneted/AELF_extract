@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 def get_chapter_list():
     # Path to the 'Livres' directory
-    livres_path = './AELF/Livres'
+    livres_path = './Livres'
     # Extracting folder names as chapters
     try:
         chapters = [d for d in os.listdir(livres_path) if os.path.isdir(os.path.join(livres_path, d))]
@@ -28,7 +28,7 @@ def index():
         chap = request.form['chap']
         debut = request.form['debut']
         fin = request.form['fin']
-        dir_path = f'./AELF/Livres/{selected_chapter}'
+        dir_path = f'./Livres/{selected_chapter}'
         # Get the list of markdown files in the directory
         md_files = [f for f in os.listdir(dir_path) if f.endswith('.md')]
         if not md_files:
