@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Extracteur de Versets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            
+
+        }
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+            width: 30%;
+        }
+        input[type="text"]{
+            width: 4em;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        select {
+            width: 30%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Extracteur de Versets</h1>
+        <form method="POST" id="extractForm">
+            <div class="form-group">
+                <label for="selected_chapter">Livre :</label>
+                <select name="selected_chapter" id="selected_chapter">
+                    {% for chapter in chapters %}
+                    <option value="{{ chapter }}" {% if chapter == selected_chapter %}selected{% endif %}>{{ chapter }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="chap">Chapitre :</label>
+                <input type="text" id="chap" name="chap" value="{{ request.form.chap }}">
+            </div>
+            <div class="form-group">
+                <label for="debut">Verset de début :</label>
+                <input type="text" id="debut" name="debut" value="{{ request.form.debut }}">
+            </div>
+            <div class="form-group">
+                <label for="fin">Verset de fin :</label>
+                <input type="text" id="fin" name="fin" value="{{ request.form.fin }}">
+            </div>
+            <div class="form-group">
+                <label for="keep_verse_numbers">Conserver les num. de verset :</label>
+                <input type="checkbox" id="keep_verse_numbers" name="keep_verse_numbers" {% if keep_verse_numbers %}checked{% endif %}>
+            </div>
+            <button type="submit">Extraire</button>
+        </form>
+        {% if result %}
+        <div>
+            <h2>Texte extrait :</h2>
+            <textarea id="extractedText" readonly>{{ result }}</textarea>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        window.onload = function() {
+
+            var extractedText = document.getElementById('extractedText');
+            if (extractedText && extractedText.value.trim() !== '') {
+                
+                // Use the Clipboard API to copy the text
+                navigator.clipboard.writeText(extractedText.value)
+                .then(() => {
+                    // Delay the focus change until after the copy action is successful
+                    document.getElementById('chap').focus();
+                    document.getElementById('chap').select();
+                })
+                .catch(err => {
+                    console.error('Could not copy text: ', err);
+                });
+
+
+            }
+
+        };
+    </script>
+</body>
+</html>
